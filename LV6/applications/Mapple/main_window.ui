@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuRecentFiles">
+     <property name="title">
+      <string>Recent Files</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionClearRecentFiles"/>
+    </widget>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="menuRecentFiles"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionSnapshot"/>
+    <addaction name="separator"/>
+    <addaction name="actionPasteCamera"/>
+    <addaction name="actionCopyCamera"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveCameraState"/>
+    <addaction name="actionRestoreCameraState"/>
+    <addaction name="separator"/>
+    <addaction name="actionBackgroundColor"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAboutMapple"/>
+   </widget>
+   <widget class="QMenu" name="menuConversion">
+    <property name="title">
+     <string>Conversion</string>
+    </property>
+    <addaction name="actionPoissonSurfaceReconstruction"/>
+    <addaction name="actionRansacPrimitiveExtraction"/>
+    <addaction name="separator"/>
+    <addaction name="actionSamplingSurfaceMesh"/>
+   </widget>
+   <widget class="QMenu" name="menuTopology">
+    <property name="title">
+     <string>Topology</string>
+    </property>
+    <addaction name="actionTopologyStatistics"/>
+    <addaction name="separator"/>
+    <addaction name="actionDetectDuplicatedFaces"/>
+    <addaction name="actionRemoveDuplicatedFaces"/>
+    <addaction name="separator"/>
+    <addaction name="actionDetectSelfIntersections"/>
+    <addaction name="actionRemeshSelfIntersections"/>
+   </widget>
+   <widget class="QMenu" name="menuOrientation">
+    <property name="title">
+     <string>Orientation</string>
+    </property>
+    <addaction name="actionEstimatePointCloudNormals"/>
+    <addaction name="actionReorientPointCloudNormals"/>
+    <addaction name="separator"/>
+    <addaction name="actionNormalizePointCloudNormals"/>
+   </widget>
+   <widget class="QMenu" name="menuSelect">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionInvertSelection"/>
+    <addaction name="separator"/>
+    <addaction name="actionDeleteSelectedPrimitives"/>
+    <addaction name="separator"/>
+    <addaction name="actionDownSampling"/>
+    <addaction name="actionAddGaussianNoise"/>
+   </widget>
+   <widget class="QMenu" name="menuProperty">
+    <property name="title">
+     <string>Property</string>
+    </property>
+    <addaction name="actionComputeHeightField"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menuSelect"/>
+   <addaction name="menuProperty"/>
+   <addaction name="menuTopology"/>
+   <addaction name="menuOrientation"/>
+   <addaction name="menuConversion"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionSnapshot"/>
+   <addaction name="separator"/>
+   <addaction name="actionCameraManipulation"/>
+   <addaction name="separator"/>
+   <addaction name="actionSelectClick"/>
+   <addaction name="actionSelectRect"/>
+   <addaction name="actionSelectLasso"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidgetRendering">
+   <property name="minimumSize">
+    <size>
+     <width>180</width>
+     <height>280</height>
+    </size>
+   </property>
+   <property name="windowIcon">
+    <iconset>
+     <normaloff>Resources/icons/options.png</normaloff>Resources/icons/options.png</iconset>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetClosable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>8</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>8</number>
+     </property>
+     <item>
+      <widget class="QToolBox" name="toolBox">
+       <widget class="QWidget" name="toolBoxTrianglesDrawable">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>180</width>
+          <height>333</height>
+         </rect>
+        </property>
+        <attribute name="icon">
+         <iconset>
+          <normaloff>Resources/icons/drawable_triangles.png</normaloff>Resources/icons/drawable_triangles.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>Surface</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutTrianglesDrawable"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="toolBoxLinesDrawable">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>180</width>
+          <height>333</height>
+         </rect>
+        </property>
+        <attribute name="icon">
+         <iconset>
+          <normaloff>Resources/icons/drawable_lines.png</normaloff>Resources/icons/drawable_lines.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>Lines</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutLinesDrawable"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="toolBoxPointsDrawable">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>180</width>
+          <height>333</height>
+         </rect>
+        </property>
+        <attribute name="icon">
+         <iconset>
+          <normaloff>Resources/icons/drawable_points.png</normaloff>Resources/icons/drawable_points.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>Points</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutPointsDrawable"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="toolBoxPageGlobalSetting">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>180</width>
+          <height>333</height>
+         </rect>
+        </property>
+        <attribute name="icon">
+         <iconset>
+          <normaloff>Resources/icons/light.png</normaloff>Resources/icons/light.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>Global Setting</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutGlobalSetting"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidgetModels">
+   <property name="locale">
+    <locale language="English" country="UnitedStates"/>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetClosable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::RightDockWidgetArea</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContentsModels">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QTreeWidget" name="treeWidgetModels">
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
+       <property name="columnCount">
+        <number>3</number>
+       </property>
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string notr="true">2</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string notr="true">3</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidgetLogger">
+   <property name="features">
+    <set>QDockWidget::DockWidgetClosable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::RightDockWidgetArea</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContentsLogger">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QTextEdit" name="textEditLogger">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/fileopen.png</normaloff>Resources/icons/fileopen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/filesave.png</normaloff>Resources/icons/filesave.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveCameraState">
+   <property name="text">
+    <string>Save Camera State</string>
+   </property>
+  </action>
+  <action name="actionRestoreCameraState">
+   <property name="text">
+    <string>Restore Camera State</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/exit.png</normaloff>Resources/icons/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionAboutMapple">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/help.png</normaloff>Resources/icons/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>About Mapple</string>
+   </property>
+  </action>
+  <action name="actionClearRecentFiles">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/clear.png</normaloff>Resources/icons/clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clear</string>
+   </property>
+  </action>
+  <action name="actionPoissonSurfaceReconstruction">
+   <property name="text">
+    <string>Poisson Surface Reconstruction</string>
+   </property>
+  </action>
+  <action name="actionRansacPrimitiveExtraction">
+   <property name="text">
+    <string>RANSAC Primitive Extraction</string>
+   </property>
+  </action>
+  <action name="actionSnapshot">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/snap_shot.png</normaloff>Resources/icons/snap_shot.png</iconset>
+   </property>
+   <property name="text">
+    <string>Snapshot</string>
+   </property>
+  </action>
+  <action name="actionBackgroundColor">
+   <property name="text">
+    <string>Background Color</string>
+   </property>
+  </action>
+  <action name="actionSamplingSurfaceMesh">
+   <property name="text">
+    <string>Sampling Surface Mesh (as Point Cloud)</string>
+   </property>
+  </action>
+  <action name="actionDetectDuplicatedFaces">
+   <property name="text">
+    <string>Detect Duplicated Faces</string>
+   </property>
+  </action>
+  <action name="actionRemoveDuplicatedFaces">
+   <property name="text">
+    <string>Remove Duplicated Faces</string>
+   </property>
+  </action>
+  <action name="actionTopologyStatistics">
+   <property name="text">
+    <string>Show Statistics</string>
+   </property>
+  </action>
+  <action name="actionDetectSelfIntersections">
+   <property name="text">
+    <string>Detect Self Intersections</string>
+   </property>
+  </action>
+  <action name="actionRemeshSelfIntersections">
+   <property name="text">
+    <string>Remesh Self Intersections</string>
+   </property>
+  </action>
+  <action name="actionEstimatePointCloudNormals">
+   <property name="text">
+    <string>Estimate Point Cloud Normals</string>
+   </property>
+  </action>
+  <action name="actionReorientPointCloudNormals">
+   <property name="text">
+    <string>Re-orient Point Cloud Normals</string>
+   </property>
+  </action>
+  <action name="actionSelectLasso">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/select_lasso.png</normaloff>Resources/icons/select_lasso.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select Using the Lasso Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Select Using the Lasso Tool</string>
+   </property>
+  </action>
+  <action name="actionInvertSelection">
+   <property name="text">
+    <string>Invert Selection</string>
+   </property>
+   <property name="toolTip">
+    <string>Invert Selection</string>
+   </property>
+  </action>
+  <action name="actionDeleteSelectedPrimitives">
+   <property name="text">
+    <string>Delete Selected Primitives</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete Selected Primitives</string>
+   </property>
+  </action>
+  <action name="actionSelectRect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/select_rect.png</normaloff>Resources/icons/select_rect.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select Using the Sketch Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>Select Using the Sketch Tool</string>
+   </property>
+  </action>
+  <action name="actionCameraManipulation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/manipulation.png</normaloff>Resources/icons/manipulation.png</iconset>
+   </property>
+   <property name="text">
+    <string>Camera Manipulation</string>
+   </property>
+   <property name="toolTip">
+    <string>Camera Manipulation</string>
+   </property>
+  </action>
+  <action name="actionSelectClick">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/select_click.png</normaloff>Resources/icons/select_click.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select by Clicking</string>
+   </property>
+   <property name="toolTip">
+    <string>Select by Clicking</string>
+   </property>
+  </action>
+  <action name="actionComputeHeightField">
+   <property name="text">
+    <string>Compute Height Field</string>
+   </property>
+  </action>
+  <action name="actionDownSampling">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/down_sample.png</normaloff>Resources/icons/down_sample.png</iconset>
+   </property>
+   <property name="text">
+    <string>Down Sampling</string>
+   </property>
+  </action>
+  <action name="actionAddGaussianNoise">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/noise.png</normaloff>Resources/icons/noise.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add Gaussian Noise</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/icons/options.png</normaloff>Resources/icons/options.png</iconset>
+   </property>
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionCopyCamera">
+   <property name="text">
+    <string>Copy Camera</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionPasteCamera">
+   <property name="text">
+    <string>Paste Camera</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionNormalizePointCloudNormals">
+   <property name="text">
+    <string>Normalize Point Cloud Normals</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
